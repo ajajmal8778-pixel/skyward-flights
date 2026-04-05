@@ -18,6 +18,7 @@ interface AppState {
   logout: () => void;
   addBooking: (booking: Booking) => void;
   bookSeat: (seat: string) => void;
+  cancelBooking: (bookingId: string) => void;
 }
 
 export const useStore = create<AppState>((set, get) => ({
@@ -45,4 +46,10 @@ export const useStore = create<AppState>((set, get) => ({
   logout: () => set({ user: null }),
   addBooking: (booking) => set((s) => ({ bookings: [...s.bookings, booking] })),
   bookSeat: (seat) => set((s) => ({ bookedSeats: [...s.bookedSeats, seat] })),
+  cancelBooking: (bookingId) =>
+    set((s) => ({
+      bookings: s.bookings.map((b) =>
+        b.id === bookingId ? { ...b, status: "cancelled" as const } : b
+      ),
+    })),
 }));

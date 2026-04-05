@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, Plane, CreditCard } from "lucide-react";
+import { ArrowLeft, Plane, CreditCard, User, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import Navbar from "@/components/Navbar";
 import SeatSelection from "@/components/SeatSelection";
 import BoardingPass from "@/components/BoardingPass";
@@ -16,6 +17,8 @@ const BookingPage = () => {
   const { user, addBooking, bookSeat } = useStore();
   const [selectedSeat, setSelectedSeat] = useState<string | null>(null);
   const [booking, setBooking] = useState<Booking | null>(null);
+  const [passengerName, setPassengerName] = useState(user?.name || "");
+  const [passengerEmail, setPassengerEmail] = useState(user?.email || "");
 
   const flight = mockFlights.find((f) => f.id === flightId);
 
@@ -28,7 +31,7 @@ const BookingPage = () => {
   }
 
   const handleConfirm = () => {
-    if (!selectedSeat) return;
+    if (!selectedSeat || !passengerName.trim() || !passengerEmail.trim()) return;
     if (!user) {
       navigate("/login");
       return;
@@ -38,7 +41,7 @@ const BookingPage = () => {
     const newBooking: Booking = {
       id: `BK-${Date.now()}`,
       flight,
-      passenger: user.name,
+      passenger: passengerName.trim(),
       seat: selectedSeat,
       date: "2026-04-15",
       status: "confirmed",
@@ -74,6 +77,8 @@ const BookingPage = () => {
     );
   }
 
+  const canConfirm = selectedSeat && passengerName.trim() && passengerEmail.trim();
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -83,8 +88,8 @@ const BookingPage = () => {
         </Button>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Flight Summary */}
-          <div className="lg:col-span-1">
+          {/* Flight Summary & Passenger Details */}
+          <div className="lg:col-span-1 space-y-6">
             <div className="bg-card rounded-xl border border-border p-6 sticky top-24">
               <h3 className="font-display font-bold text-lg text-foreground mb-4">Flight Summary</h3>
               <div className="flex justify-between items-center mb-4">
@@ -122,6 +127,37 @@ const BookingPage = () => {
                   </div>
                 )}
               </div>
+
+              {/* Passenger Details */}
+              <div className="border-t border-border mt-4 pt-4 space-y-3">
+                <h4 className="font-display font-bold text-sm text-foreground">Passenger Details</h4>
+                <div>
+                  <label className="text-xs text-muted-foreground mb-1 block">Full Name</label>
+                  <div className="relative">
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <Input
+                      value={passengerName}
+                      onChange={(e) => setPassengerName(e.target.value)}
+                      placeholder="Enter your full name"
+                      className="pl-9"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="text-xs text-muted-foreground mb-1 block">Email Address</label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <Input
+                      type="email"
+                      value={passengerEmail}
+                      onChange={(e) => setPassengerEmail(e.target.value)}
+                      placeholder="Enter your email"
+                      className="pl-9"
+                    />
+                  </div>
+                </div>
+              </div>
+
               <div className="border-t border-border mt-4 pt-4">
                 <div className="flex justify-between items-center">
                   <span className="text-muted-foreground">Total</span>
@@ -130,11 +166,11 @@ const BookingPage = () => {
               </div>
               <Button
                 onClick={handleConfirm}
-                disabled={!selectedSeat}
+                disabled={!canConfirm}
                 className="w-full mt-4 gradient-sky text-accent-foreground border-0"
               >
                 <CreditCard className="w-4 h-4 mr-2" />
-                Confirm Booking
+                Confirm — ${flight.price}
               </Button>
             </div>
           </div>

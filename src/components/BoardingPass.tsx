@@ -1,6 +1,8 @@
+import { useRef, useCallback } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { motion } from "framer-motion";
-import { Plane, Calendar, Clock, User, Armchair } from "lucide-react";
+import { Plane, Calendar, Clock, User, Armchair, Download } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import type { Booking } from "@/lib/mockData";
 
 interface BoardingPassProps {
@@ -8,13 +10,25 @@ interface BoardingPassProps {
 }
 
 const BoardingPass = ({ booking }: BoardingPassProps) => {
+  const passRef = useRef<HTMLDivElement>(null);
+
+  const handleDownload = useCallback(async () => {
+    if (!passRef.current) return;
+    const { default: html2canvas } = await import("html2canvas");
+    const canvas = await html2canvas(passRef.current, { scale: 2, useCORS: true });
+    const link = document.createElement("a");
+    link.download = `boarding-pass-${booking.pnr}.png`;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  }, [booking.pnr]);
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       className="max-w-lg mx-auto"
     >
-      <div className="rounded-2xl overflow-hidden shadow-elevated">
+      <div ref={passRef} className="rounded-2xl overflow-hidden shadow-elevated">
         {/* Header */}
         <div className="gradient-sky px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -101,6 +115,15 @@ const BoardingPass = ({ booking }: BoardingPassProps) => {
           {booking.status}
         </div>
       </div>
+
+      {/* Download Button */}
+      {booking.status === "confirmed" && (
+        <div className="text-center mt-4">
+          <Button variant="outline" size="sm" onClick={handleDownload}>
+            <Download className="w-4 h-4 mr-2" /> Download as PNG
+          </Button>
+        </div>
+      )}
     </motion.div>
   );
 };
