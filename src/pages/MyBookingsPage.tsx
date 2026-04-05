@@ -2,11 +2,11 @@ import Navbar from "@/components/Navbar";
 import BoardingPass from "@/components/BoardingPass";
 import { useStore } from "@/lib/store";
 import { useNavigate } from "react-router-dom";
-import { Ticket } from "lucide-react";
+import { Ticket, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const MyBookingsPage = () => {
-  const { user, bookings } = useStore();
+  const { user, bookings, cancelBooking } = useStore();
   const navigate = useNavigate();
 
   if (!user) {
@@ -39,7 +39,21 @@ const MyBookingsPage = () => {
         ) : (
           <div className="space-y-8">
             {userBookings.map((b) => (
-              <BoardingPass key={b.id} booking={b} />
+              <div key={b.id}>
+                <BoardingPass booking={b} />
+                {b.status === "confirmed" && (
+                  <div className="text-center mt-3">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="text-destructive border-destructive/30 hover:bg-destructive/10"
+                      onClick={() => cancelBooking(b.id)}
+                    >
+                      <XCircle className="w-4 h-4 mr-1" /> Cancel Booking
+                    </Button>
+                  </div>
+                )}
+              </div>
             ))}
           </div>
         )}

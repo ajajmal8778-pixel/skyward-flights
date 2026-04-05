@@ -18,6 +18,7 @@ interface AppState {
   logout: () => void;
   addBooking: (booking: Booking) => void;
   bookSeat: (seat: string) => void;
+  cancelBooking: (bookingId: string) => void;
 }
 
 export const useStore = create<AppState>((set, get) => ({
