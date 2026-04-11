@@ -59,8 +59,12 @@ const BoardingPass = ({ booking }: BoardingPassProps) => {
             <div className="flex items-center gap-2">
               <User className="w-4 h-4 text-muted-foreground" />
               <div>
-                <div className="text-xs text-muted-foreground">Passenger</div>
-                <div className="font-semibold text-foreground">{booking.passenger}</div>
+                <div className="text-xs text-muted-foreground">Passenger(s)</div>
+                <div className="font-semibold text-foreground">
+                  {booking.passengers && booking.passengers.length > 1
+                    ? `${booking.passengers[0].name} +${booking.passengers.length - 1}`
+                    : booking.passenger}
+                </div>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -80,11 +84,26 @@ const BoardingPass = ({ booking }: BoardingPassProps) => {
             <div className="flex items-center gap-2">
               <Armchair className="w-4 h-4 text-muted-foreground" />
               <div>
-                <div className="text-xs text-muted-foreground">Seat</div>
+                <div className="text-xs text-muted-foreground">Seat(s)</div>
                 <div className="font-semibold text-foreground">{booking.seat}</div>
               </div>
             </div>
           </div>
+
+          {/* Multi-passenger details */}
+          {booking.passengers && booking.passengers.length > 1 && (
+            <div className="mt-4 border-t border-dashed border-border pt-4">
+              <div className="text-xs text-muted-foreground mb-2">All Passengers</div>
+              <div className="space-y-1">
+                {booking.passengers.map((p, i) => (
+                  <div key={i} className="flex justify-between text-sm">
+                    <span className="text-foreground">{p.name}</span>
+                    <span className="text-muted-foreground">Seat {p.seat}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           <div className="mt-6 flex items-center justify-between border-t border-dashed border-border pt-4">
             <div>
