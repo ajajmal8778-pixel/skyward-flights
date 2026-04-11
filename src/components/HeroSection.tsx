@@ -8,8 +8,8 @@ import heroImg from "@/assets/hero-plane.jpg";
 
 const HeroSection = () => {
   const navigate = useNavigate();
-  const [from, setFrom] = useState("JFK");
-  const [to, setTo] = useState("LHR");
+  const [from, setFrom] = useState("MAA");
+  const [to, setTo] = useState("CJB");
   const [date, setDate] = useState("2026-04-15");
   const [passengers, setPassengers] = useState(1);
 

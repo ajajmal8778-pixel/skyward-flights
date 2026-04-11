@@ -77,9 +77,9 @@ const FlightCard = ({ flight, onSelect, index }: FlightCardProps) => {
           <div className="text-right">
             <div className="flex items-center gap-2">
               {discount > 0 && (
-                <span className="text-xs line-through text-muted-foreground">${flight.originalPrice}</span>
+                <span className="text-xs line-through text-muted-foreground">₹{flight.originalPrice.toLocaleString("en-IN")}</span>
               )}
-              <span className="text-2xl font-display font-bold text-foreground">${flight.price}</span>
+              <span className="text-2xl font-display font-bold text-foreground">₹{flight.price.toLocaleString("en-IN")}</span>
             </div>
             {discount > 0 && (
               <span className="inline-flex items-center gap-1 text-xs font-medium text-emerald-600">

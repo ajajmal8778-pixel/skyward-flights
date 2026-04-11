@@ -59,9 +59,9 @@ const AdminDashboard = () => {
         {/* Stat Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <StatCard icon={BarChart3} label="Total Bookings" value={adminStats.totalBookings.toLocaleString()} />
-          <StatCard icon={DollarSign} label="Revenue" value={`$${(adminStats.totalRevenue / 1000).toFixed(0)}K`} sub="All time" />
+          <StatCard icon={DollarSign} label="Revenue" value={`₹${(adminStats.totalRevenue / 100000).toFixed(1)}L`} sub="All time" />
           <StatCard icon={Users} label="Occupancy Rate" value={`${adminStats.occupancyRate}%`} />
-          <StatCard icon={TrendingUp} label="Popular Route" value="JFK → LHR" sub="342 bookings" />
+          <StatCard icon={TrendingUp} label="Popular Route" value="MAA → CJB" sub="342 bookings" />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
@@ -110,7 +110,7 @@ const AdminDashboard = () => {
                       <div className="text-xs text-muted-foreground">{r.bookings} bookings</div>
                     </div>
                   </div>
-                  <span className="text-sm font-semibold text-foreground">${(r.revenue / 1000).toFixed(0)}K</span>
+                  <span className="text-sm font-semibold text-foreground">₹{(r.revenue / 1000).toFixed(0)}K</span>
                 </div>
               ))}
             </div>
@@ -130,7 +130,7 @@ const AdminDashboard = () => {
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-sm font-semibold text-foreground">${b.amount}</div>
+                    <div className="text-sm font-semibold text-foreground">₹{b.amount.toLocaleString("en-IN")}</div>
                     <span className={`text-xs font-medium ${
                       b.status === "confirmed" ? "text-emerald-600" : b.status === "cancelled" ? "text-destructive" : "text-amber-600"
                     }`}>

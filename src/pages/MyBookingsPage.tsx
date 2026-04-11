@@ -21,7 +21,7 @@ const MyBookingsPage = () => {
     );
   }
 
-  const userBookings = bookings.filter((b) => b.passenger === user.name);
+  const userBookings = bookings.filter((b) => b.passengers?.some(p => p.name === user.name) || b.passenger === user.name);
 
   return (
     <div className="min-h-screen bg-background">
