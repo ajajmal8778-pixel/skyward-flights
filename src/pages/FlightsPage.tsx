@@ -41,8 +41,9 @@ const FlightsPage = () => {
   const [cabinBag, setCabinBag] = useState(false);
   const [checkedBag, setCheckedBag] = useState(false);
 
-  const from = searchParams.get("from") || "JFK";
-  const to = searchParams.get("to") || "LHR";
+  const from = searchParams.get("from") || "MAA";
+  const to = searchParams.get("to") || "CJB";
+  const pax = searchParams.get("pax") || "1";
 
   const filtered = useMemo(() => {
     return mockFlights.filter((f) => {
@@ -71,7 +72,7 @@ const FlightsPage = () => {
   }, [filtered, sortBy]);
 
   const handleSelect = (flight: Flight) => {
-    navigate(`/book/${flight.id}`);
+    navigate(`/book/${flight.id}?pax=${pax}`);
   };
 
   const resetFilters = () => {
