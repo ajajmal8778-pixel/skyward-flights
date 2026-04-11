@@ -6,11 +6,12 @@ import { useStore } from "@/lib/store";
 interface SeatMapProps {
   onSeatSelect: (seat: string) => void;
   selectedSeat: string | null;
+  additionalBookedSeats?: string[];
 }
 
-const SeatSelection = ({ onSeatSelect, selectedSeat }: SeatMapProps) => {
+const SeatSelection = ({ onSeatSelect, selectedSeat, additionalBookedSeats = [] }: SeatMapProps) => {
   const { bookedSeats } = useStore();
-  const allBooked = [...seatMap.bookedSeats, ...bookedSeats];
+  const allBooked = [...seatMap.bookedSeats, ...bookedSeats, ...additionalBookedSeats];
 
   return (
     <div className="bg-card rounded-xl border border-border p-6">

@@ -35,7 +35,7 @@ const FlightsPage = () => {
   const [showFilters, setShowFilters] = useState(true);
 
   // Filters
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 50000]);
   const [directOnly, setDirectOnly] = useState(false);
   const [availability, setAvailability] = useState<AvailabilityFilter>("all");
   const [cabinBag, setCabinBag] = useState(false);
@@ -75,7 +75,7 @@ const FlightsPage = () => {
   };
 
   const resetFilters = () => {
-    setPriceRange([0, 5000]);
+    setPriceRange([0, 50000]);
     setDirectOnly(false);
     setAvailability("all");
     setCabinBag(false);
@@ -129,12 +129,12 @@ const FlightsPage = () => {
                 {/* Price Range */}
                 <div>
                   <label className="text-sm font-medium text-foreground mb-3 block">
-                    Price Range: ${priceRange[0]} — ${priceRange[1]}
+                    Price Range: ₹{priceRange[0].toLocaleString("en-IN")} — ₹{priceRange[1].toLocaleString("en-IN")}
                   </label>
                   <Slider
                     min={0}
-                    max={5000}
-                    step={50}
+                    max={50000}
+                    step={500}
                     value={priceRange}
                     onValueChange={(v) => setPriceRange(v as [number, number])}
                   />
