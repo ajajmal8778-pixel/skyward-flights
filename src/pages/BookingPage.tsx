@@ -57,6 +57,15 @@ const BookingPage = () => {
 
   const handleSeatSelect = (seat: string) => {
     updatePassenger(activePassenger, "seat", seat);
+    // Auto-advance to next passenger without a seat
+    const nextEmpty = passengers.findIndex((p, i) => i > activePassenger && !p.seat);
+    if (nextEmpty !== -1) {
+      setActivePassenger(nextEmpty);
+    } else {
+      // Check if any earlier passenger still needs a seat
+      const anyEmpty = passengers.findIndex((p, i) => i !== activePassenger && !p.seat);
+      if (anyEmpty !== -1) setActivePassenger(anyEmpty);
+    }
   };
 
   const selectedSeats = passengers.map((p) => p.seat).filter(Boolean);
