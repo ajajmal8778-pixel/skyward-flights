@@ -47,6 +47,8 @@ const FlightsPage = () => {
 
   const filtered = useMemo(() => {
     return mockFlights.filter((f) => {
+      if (f.fromCode !== from) return false;
+      if (f.toCode !== to) return false;
       if (f.price < priceRange[0] || f.price > priceRange[1]) return false;
       if (directOnly && f.stops > 0) return false;
       if (availability === "high" && f.seatsAvailable < 50) return false;
@@ -54,7 +56,7 @@ const FlightsPage = () => {
       if (availability === "low" && f.seatsAvailable >= 20) return false;
       return true;
     });
-  }, [priceRange, directOnly, availability]);
+  }, [from, to, priceRange, directOnly, availability]);
 
   const sorted = useMemo(() => {
     return [...filtered].sort((a, b) => {

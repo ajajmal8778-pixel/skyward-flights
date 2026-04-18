@@ -52,198 +52,134 @@ export const airports = [
   { code: "SIN", city: "Singapore", country: "Singapore" },
 ];
 
-export const mockFlights: Flight[] = [
-  {
-    id: "FL001",
-    airline: "IndiGo",
-    flightNo: "6E-2041",
-    from: "Chennai",
-    fromCode: "MAA",
-    to: "Coimbatore",
-    toCode: "CJB",
-    departTime: "06:15",
-    arriveTime: "07:30",
-    duration: "1h 15m",
-    price: 2450,
-    originalPrice: 3200,
-    seatsAvailable: 42,
-    totalSeats: 180,
-    aircraft: "Airbus A320",
-    stops: 0,
-    score: 95,
-  },
-  {
-    id: "FL002",
-    airline: "Air India",
-    flightNo: "AI-0543",
-    from: "Chennai",
-    fromCode: "MAA",
-    to: "Coimbatore",
-    toCode: "CJB",
-    departTime: "10:30",
-    arriveTime: "11:50",
-    duration: "1h 20m",
-    price: 2890,
-    originalPrice: 3500,
-    seatsAvailable: 78,
-    totalSeats: 220,
-    aircraft: "Boeing 737",
-    stops: 0,
-    score: 88,
-  },
-  {
-    id: "FL003",
-    airline: "SpiceJet",
-    flightNo: "SG-1122",
-    from: "Mumbai",
-    fromCode: "BOM",
-    to: "Delhi",
-    toCode: "DEL",
-    departTime: "08:00",
-    arriveTime: "10:10",
-    duration: "2h 10m",
-    price: 3750,
-    originalPrice: 4800,
-    seatsAvailable: 15,
-    totalSeats: 160,
-    aircraft: "Boeing 737 MAX",
-    stops: 0,
-    score: 82,
-  },
-  {
-    id: "FL004",
-    airline: "Vistara",
-    flightNo: "UK-0815",
-    from: "Mumbai",
-    fromCode: "BOM",
-    to: "Delhi",
-    toCode: "DEL",
-    departTime: "14:45",
-    arriveTime: "17:00",
-    duration: "2h 15m",
-    price: 4200,
-    originalPrice: 5100,
-    seatsAvailable: 95,
-    totalSeats: 200,
-    aircraft: "Airbus A320neo",
-    stops: 0,
-    score: 90,
-  },
-  {
-    id: "FL005",
-    airline: "IndiGo",
-    flightNo: "6E-5567",
-    from: "Delhi",
-    fromCode: "DEL",
-    to: "Bengaluru",
-    toCode: "BLR",
-    departTime: "06:00",
-    arriveTime: "08:45",
-    duration: "2h 45m",
-    price: 3980,
-    originalPrice: 4500,
-    seatsAvailable: 8,
-    totalSeats: 180,
-    aircraft: "Airbus A321",
-    stops: 0,
-    score: 70,
-  },
-  {
-    id: "FL006",
-    airline: "Air India",
-    flightNo: "AI-0872",
-    from: "Bengaluru",
-    fromCode: "BLR",
-    to: "Hyderabad",
-    toCode: "HYD",
-    departTime: "09:30",
-    arriveTime: "10:45",
-    duration: "1h 15m",
-    price: 2100,
-    originalPrice: 2800,
-    seatsAvailable: 55,
-    totalSeats: 180,
-    aircraft: "Airbus A320",
-    stops: 0,
-    score: 92,
-  },
-  {
-    id: "FL007",
-    airline: "SpiceJet",
-    flightNo: "SG-3345",
-    from: "Kolkata",
-    fromCode: "CCU",
-    to: "Goa",
-    toCode: "GOI",
-    departTime: "12:00",
-    arriveTime: "15:10",
-    duration: "3h 10m",
-    price: 4550,
-    originalPrice: 5200,
-    seatsAvailable: 30,
-    totalSeats: 180,
-    aircraft: "Boeing 737",
-    stops: 1,
-    score: 74,
-  },
-  {
-    id: "FL008",
-    airline: "Vistara",
-    flightNo: "UK-1190",
-    from: "Chennai",
-    fromCode: "MAA",
-    to: "Delhi",
-    toCode: "DEL",
-    departTime: "16:00",
-    arriveTime: "18:45",
-    duration: "2h 45m",
-    price: 5200,
-    originalPrice: 6800,
-    seatsAvailable: 22,
-    totalSeats: 200,
-    aircraft: "Boeing 787",
-    stops: 0,
-    score: 85,
-  },
-  {
-    id: "FL009",
-    airline: "IndiGo",
-    flightNo: "6E-7788",
-    from: "Mumbai",
-    fromCode: "BOM",
-    to: "Goa",
-    toCode: "GOI",
-    departTime: "07:15",
-    arriveTime: "08:25",
-    duration: "1h 10m",
-    price: 1950,
-    originalPrice: 2400,
-    seatsAvailable: 65,
-    totalSeats: 180,
-    aircraft: "Airbus A320",
-    stops: 0,
-    score: 96,
-  },
-  {
-    id: "FL010",
-    airline: "Air India",
-    flightNo: "AI-0310",
-    from: "Delhi",
-    fromCode: "DEL",
-    to: "Mumbai",
-    toCode: "BOM",
-    departTime: "20:30",
-    arriveTime: "22:45",
-    duration: "2h 15m",
-    price: 3600,
-    originalPrice: 4200,
-    seatsAvailable: 40,
-    totalSeats: 220,
-    aircraft: "Airbus A330",
-    stops: 0,
-    score: 87,
-  },
+// Route definitions: [fromCode, toCode, basePrice, baseDurationMin, stops]
+const routeDefs: Array<[string, string, number, number, number]> = [
+  ["MAA", "CJB", 2400, 75, 0],
+  ["CJB", "MAA", 2350, 80, 0],
+  ["MAA", "BLR", 2800, 70, 0],
+  ["BLR", "MAA", 2750, 70, 0],
+  ["MAA", "DEL", 5200, 165, 0],
+  ["DEL", "MAA", 5100, 170, 0],
+  ["MAA", "BOM", 4200, 130, 0],
+  ["BOM", "MAA", 4150, 130, 0],
+  ["MAA", "HYD", 2900, 80, 0],
+  ["HYD", "MAA", 2850, 80, 0],
+  ["BOM", "DEL", 3800, 130, 0],
+  ["DEL", "BOM", 3750, 135, 0],
+  ["BOM", "GOI", 1950, 70, 0],
+  ["GOI", "BOM", 1900, 70, 0],
+  ["BOM", "BLR", 3100, 95, 0],
+  ["BLR", "BOM", 3050, 95, 0],
+  ["DEL", "BLR", 4000, 165, 0],
+  ["BLR", "DEL", 3950, 170, 0],
+  ["DEL", "HYD", 3500, 140, 0],
+  ["HYD", "DEL", 3450, 140, 0],
+  ["DEL", "CCU", 4100, 130, 0],
+  ["CCU", "DEL", 4050, 135, 0],
+  ["BLR", "HYD", 2100, 75, 0],
+  ["HYD", "BLR", 2050, 75, 0],
+  ["BLR", "GOI", 2400, 75, 0],
+  ["GOI", "BLR", 2350, 75, 0],
+  ["CCU", "GOI", 4500, 190, 1],
+  ["GOI", "CCU", 4450, 195, 1],
+  ["CCU", "BOM", 4200, 155, 0],
+  ["BOM", "CCU", 4150, 155, 0],
+  ["MAA", "DXB", 18500, 260, 0],
+  ["DXB", "MAA", 18000, 270, 0],
+  ["BOM", "DXB", 16500, 200, 0],
+  ["DXB", "BOM", 16000, 205, 0],
+  ["DEL", "DXB", 17800, 220, 0],
+  ["DXB", "DEL", 17500, 220, 0],
+  ["DEL", "LHR", 42000, 540, 0],
+  ["LHR", "DEL", 41000, 545, 0],
+  ["BOM", "SIN", 28000, 340, 0],
+  ["SIN", "BOM", 27500, 345, 0],
+  ["DEL", "JFK", 65000, 900, 1],
+  ["JFK", "DEL", 64000, 905, 1],
+  ["BOM", "LHR", 45000, 555, 0],
+  ["LHR", "BOM", 44000, 560, 0],
 ];
+
+const airlinesPool = [
+  { name: "IndiGo", prefix: "6E", aircraft: ["Airbus A320", "Airbus A321", "ATR 72"] },
+  { name: "Air India", prefix: "AI", aircraft: ["Boeing 787", "Airbus A320", "Airbus A350"] },
+  { name: "Vistara", prefix: "UK", aircraft: ["Airbus A320neo", "Boeing 787-9"] },
+  { name: "SpiceJet", prefix: "SG", aircraft: ["Boeing 737 MAX", "Boeing 737"] },
+  { name: "Akasa Air", prefix: "QP", aircraft: ["Boeing 737 MAX 8"] },
+  { name: "Emirates", prefix: "EK", aircraft: ["Boeing 777", "Airbus A380"] },
+  { name: "Singapore Airlines", prefix: "SQ", aircraft: ["Boeing 787", "Airbus A350"] },
+  { name: "British Airways", prefix: "BA", aircraft: ["Boeing 777", "Airbus A350"] },
+];
+
+const departSlots = ["05:30", "06:15", "07:45", "09:00", "10:30", "12:15", "14:00", "15:45", "17:30", "19:00", "20:30", "22:15"];
+
+const cityByCode = Object.fromEntries(airports.map((a) => [a.code, a.city]));
+
+const addMinutes = (time: string, min: number): string => {
+  const [h, m] = time.split(":").map(Number);
+  const total = (h * 60 + m + min) % (24 * 60);
+  const hh = Math.floor(total / 60).toString().padStart(2, "0");
+  const mm = (total % 60).toString().padStart(2, "0");
+  return `${hh}:${mm}`;
+};
+
+const formatDuration = (min: number): string => {
+  const h = Math.floor(min / 60);
+  const m = min % 60;
+  return m === 0 ? `${h}h` : `${h}h ${m}m`;
+};
+
+// Seeded pseudo-random for deterministic flights
+const seededRand = (seed: number) => {
+  const x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+};
+
+const generateFlights = (): Flight[] => {
+  const flights: Flight[] = [];
+  let seed = 1;
+  routeDefs.forEach(([fromCode, toCode, basePrice, baseDur, stops], routeIdx) => {
+    // Decide how many flights for this route (1-3)
+    const isInternational = basePrice > 10000;
+    const count = isInternational ? 1 + Math.floor(seededRand(seed++) * 2) : 2 + Math.floor(seededRand(seed++) * 2);
+    for (let i = 0; i < count; i++) {
+      const airline = airlinesPool[Math.floor(seededRand(seed++) * (isInternational ? airlinesPool.length : 5))];
+      const aircraft = airline.aircraft[Math.floor(seededRand(seed++) * airline.aircraft.length)];
+      const slotIdx = (routeIdx * 3 + i * 4) % departSlots.length;
+      const depart = departSlots[slotIdx];
+      const durVariance = Math.floor(seededRand(seed++) * 30) - 10;
+      const dur = baseDur + durVariance;
+      const priceVariance = Math.floor(seededRand(seed++) * basePrice * 0.3) - basePrice * 0.1;
+      const price = Math.round((basePrice + priceVariance) / 50) * 50;
+      const seatsAvailable = 5 + Math.floor(seededRand(seed++) * 95);
+      const totalSeats = aircraft.includes("A380") ? 500 : aircraft.includes("777") || aircraft.includes("787") ? 280 : aircraft.includes("ATR") ? 70 : 180;
+      const score = Math.round(60 + seededRand(seed++) * 40);
+      const flightNoNum = Math.floor(seededRand(seed++) * 9000) + 1000;
+      flights.push({
+        id: `FL${(flights.length + 1).toString().padStart(3, "0")}`,
+        airline: airline.name,
+        flightNo: `${airline.prefix}-${flightNoNum}`,
+        from: cityByCode[fromCode] || fromCode,
+        fromCode,
+        to: cityByCode[toCode] || toCode,
+        toCode,
+        departTime: depart,
+        arriveTime: addMinutes(depart, dur),
+        duration: formatDuration(dur),
+        price: Math.max(price, Math.round(basePrice * 0.7)),
+        originalPrice: Math.round(price * 1.25),
+        seatsAvailable,
+        totalSeats,
+        aircraft,
+        stops,
+        score,
+      });
+    }
+  });
+  return flights;
+};
+
+export const mockFlights: Flight[] = generateFlights();
 
 export const seatMap = {
   rows: 30,
