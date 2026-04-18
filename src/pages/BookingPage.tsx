@@ -183,6 +183,11 @@ const BookingPage = () => {
                   )}
                 </div>
 
+                {/* Seat selection progress */}
+                <div className="text-xs text-muted-foreground">
+                  Seats selected: <span className="font-semibold text-foreground">{selectedSeats.length}</span> / {passengers.length}
+                </div>
+
                 {/* Passenger Tabs */}
                 <div className="flex gap-1 flex-wrap">
                   {passengers.map((p, i) => (
@@ -191,10 +196,10 @@ const BookingPage = () => {
                       variant={activePassenger === i ? "default" : "outline"}
                       size="sm"
                       onClick={() => setActivePassenger(i)}
-                      className={`text-xs h-7 ${activePassenger === i ? "gradient-sky text-accent-foreground border-0" : ""}`}
+                      className={`text-xs h-7 ${activePassenger === i ? "gradient-sky text-accent-foreground border-0" : ""} ${!p.seat && activePassenger !== i ? "border-destructive/50 text-destructive" : ""}`}
                     >
                       {p.name.trim() || `Passenger ${i + 1}`}
-                      {p.seat && ` (${p.seat})`}
+                      {p.seat ? ` ✓ ${p.seat}` : " •"}
                     </Button>
                   ))}
                 </div>
