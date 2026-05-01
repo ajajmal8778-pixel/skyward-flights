@@ -1,7 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Plane, User, LogOut, LayoutDashboard } from "lucide-react";
+import { Plane, LogOut, LayoutDashboard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useStore } from "@/lib/store";
+import NotificationCenter from "@/components/NotificationCenter";
 
 const Navbar = () => {
   const { user, logout } = useStore();
@@ -28,6 +29,7 @@ const Navbar = () => {
               <span className="text-sm text-muted-foreground hidden sm:block">
                 Welcome, {user.name}
               </span>
+              <NotificationCenter />
               {user.role === "admin" && (
                 <Button variant="ghost" size="sm" onClick={() => navigate("/admin")}>
                   <LayoutDashboard className="w-4 h-4 mr-1" />
