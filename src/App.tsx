@@ -11,8 +11,14 @@ import LoginPage from "./pages/LoginPage.tsx";
 import RegisterPage from "./pages/RegisterPage.tsx";
 import AdminDashboard from "./pages/AdminDashboard.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import { useFlightReminders } from "./hooks/useFlightReminders";
 
 const queryClient = new QueryClient();
+
+const RemindersRunner = () => {
+  useFlightReminders();
+  return null;
+};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -20,6 +26,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <RemindersRunner />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/flights" element={<FlightsPage />} />
