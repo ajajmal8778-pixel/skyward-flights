@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { useStore } from "@/lib/store";
+import { useNotifications } from "@/lib/notificationStore";
 import type { Booking } from "@/lib/mockData";
 
 // Reminder offsets in minutes before departure
@@ -105,6 +106,8 @@ export function useFlightReminders() {
           (b.passenger === user.name || b.passengers?.some((p) => p.name === user.name))
       );
 
+      const addNotif = useNotifications.getState().add;
+
       for (const b of userBookings) {
         const dep = parseDeparture(b.date, b.flight.departTime);
         if (!dep) continue;
@@ -115,10 +118,19 @@ export function useFlightReminders() {
           const key = `${b.id}:${off}`;
           if (fired[key]) continue;
           const triggerAt = dep.getTime() - off * 60 * 1000;
-          // Fire if we're within the window: trigger time has passed but flight hasn't
           if (now >= triggerAt && msUntil > 0) {
             const { title, body } = buildMessage(b, off, dep);
             notify(title, body);
+            addNotif({
+              title,
+              body,
+              bookingId: b.id,
+              recipientEmail: user.email,
+              flightNo: b.flight.flightNo,
+              route: `${b.flight.fromCode} → ${b.flight.toCode}`,
+              departureISO: dep.toISOString(),
+              offsetMin: off,
+            });
             fired[key] = true;
             changed = true;
           }
