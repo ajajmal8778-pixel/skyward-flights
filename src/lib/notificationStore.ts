@@ -1,5 +1,7 @@
 import { create } from "zustand";
 
+export type NotificationKind = "reminder" | "delay" | "gate" | "price";
+
 export interface AppNotification {
   id: string;
   title: string;
@@ -10,6 +12,7 @@ export interface AppNotification {
   route: string;
   departureISO: string;
   offsetMin: number;
+  kind?: NotificationKind;
   createdAt: number;
   read: boolean;
 }
