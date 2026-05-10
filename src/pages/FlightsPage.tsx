@@ -1,7 +1,7 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, SlidersHorizontal, Sparkles, Filter, X } from "lucide-react";
+import { ArrowLeft, SlidersHorizontal, Sparkles, Filter, X, ArrowRight, Route, TrendingDown, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -9,6 +9,8 @@ import Navbar from "@/components/Navbar";
 import FlightCard from "@/components/FlightCard";
 import { mockFlights } from "@/lib/mockData";
 import type { Flight } from "@/lib/mockData";
+import { useHistory } from "@/lib/historyStore";
+import { findCheaperCombos } from "@/lib/routeCombinator";
 
 type SortOption = "bestDeal" | "priceLow" | "priceHigh" | "fastest" | "mostSeats" | "earliest";
 type AvailabilityFilter = "all" | "high" | "medium" | "low";

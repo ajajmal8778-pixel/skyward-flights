@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
+import RecommendedFlights from "@/components/RecommendedFlights";
 import { Plane, Brain, Zap, Shield } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -31,6 +32,7 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
       <HeroSection />
+      <RecommendedFlights />
 
       {/* Features */}
       <section className="py-24 bg-background">
