@@ -12,11 +12,13 @@ import RegisterPage from "./pages/RegisterPage.tsx";
 import AdminDashboard from "./pages/AdminDashboard.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import { useFlightReminders } from "./hooks/useFlightReminders";
+import { useLiveAlertsSimulator } from "./lib/liveAlertsSimulator";
 
 const queryClient = new QueryClient();
 
 const RemindersRunner = () => {
   useFlightReminders();
+  useLiveAlertsSimulator();
   return null;
 };
 

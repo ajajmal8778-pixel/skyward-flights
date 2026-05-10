@@ -1,7 +1,7 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, SlidersHorizontal, Sparkles, Filter, X } from "lucide-react";
+import { ArrowLeft, SlidersHorizontal, Sparkles, Filter, X, ArrowRight, Route, TrendingDown, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -9,6 +9,8 @@ import Navbar from "@/components/Navbar";
 import FlightCard from "@/components/FlightCard";
 import { mockFlights } from "@/lib/mockData";
 import type { Flight } from "@/lib/mockData";
+import { useHistory } from "@/lib/historyStore";
+import { findCheaperCombos } from "@/lib/routeCombinator";
 
 type SortOption = "bestDeal" | "priceLow" | "priceHigh" | "fastest" | "mostSeats" | "earliest";
 type AvailabilityFilter = "all" | "high" | "medium" | "low";
@@ -44,6 +46,13 @@ const FlightsPage = () => {
   const from = searchParams.get("from") || "MAA";
   const to = searchParams.get("to") || "CJB";
   const pax = searchParams.get("pax") || "1";
+
+  const logSearch = useHistory((s) => s.logSearch);
+  useEffect(() => {
+    logSearch({ from, to });
+  }, [from, to, logSearch]);
+
+  const cheaperCombos = useMemo(() => findCheaperCombos(from, to, 2), [from, to]);
 
   const filtered = useMemo(() => {
     return mockFlights.filter((f) => {
@@ -212,6 +221,34 @@ const FlightsPage = () => {
                 </Button>
               ))}
             </div>
+
+            {cheaperCombos.length > 0 && (
+              <div className="mb-4 bg-emerald-500/5 border border-emerald-500/30 rounded-xl p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <Route className="w-4 h-4 text-emerald-600" />
+                  <h3 className="font-display font-bold text-sm text-foreground">Cheaper via a stopover</h3>
+                  <span className="text-[10px] text-muted-foreground">AI route combinator</span>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                  {cheaperCombos.map((c) => (
+                    <div key={c.legs.map((l) => l.id).join("-")} className="bg-card border border-border rounded-lg p-3 text-sm">
+                      <div className="flex items-center gap-1.5 font-display font-bold text-foreground mb-1">
+                        <span>{c.legs[0].fromCode}</span>
+                        <ArrowRight className="w-3 h-3 text-sky" />
+                        <span className="text-sky">{c.hubs[0]}</span>
+                        <ArrowRight className="w-3 h-3 text-sky" />
+                        <span>{c.legs[c.legs.length - 1].toCode}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-xs text-muted-foreground">
+                        <span className="inline-flex items-center gap-1"><Clock className="w-3 h-3" />{Math.floor(c.totalDurationMin / 60)}h {c.totalDurationMin % 60}m</span>
+                        <span className="inline-flex items-center gap-1 text-emerald-600 font-semibold"><TrendingDown className="w-3 h-3" />Save ₹{c.savings.toLocaleString("en-IN")}</span>
+                        <span className="font-display font-bold text-foreground">₹{c.totalPrice.toLocaleString("en-IN")}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <div className="flex flex-col gap-3">
               {sorted.length === 0 ? (

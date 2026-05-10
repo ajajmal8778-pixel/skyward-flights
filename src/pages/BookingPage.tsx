@@ -9,6 +9,7 @@ import SeatSelection from "@/components/SeatSelection";
 import BoardingPass from "@/components/BoardingPass";
 import { mockFlights } from "@/lib/mockData";
 import { useStore } from "@/lib/store";
+import { useHistory } from "@/lib/historyStore";
 import type { Booking, Passenger } from "@/lib/mockData";
 
 const BookingPage = () => {
@@ -16,6 +17,7 @@ const BookingPage = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { user, addBooking, bookSeat } = useStore();
+  const logBooking = useHistory((s) => s.logBooking);
 
   const paxCount = Math.min(Math.max(parseInt(searchParams.get("pax") || "1"), 1), 6);
 
@@ -92,6 +94,7 @@ const BookingPage = () => {
     };
     passengers.forEach((p) => bookSeat(p.seat));
     addBooking(newBooking);
+    logBooking(flight);
     setBooking(newBooking);
   };
 
