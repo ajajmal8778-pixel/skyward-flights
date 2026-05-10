@@ -47,6 +47,13 @@ const FlightsPage = () => {
   const to = searchParams.get("to") || "CJB";
   const pax = searchParams.get("pax") || "1";
 
+  const logSearch = useHistory((s) => s.logSearch);
+  useEffect(() => {
+    logSearch({ from, to });
+  }, [from, to, logSearch]);
+
+  const cheaperCombos = useMemo(() => findCheaperCombos(from, to, 2), [from, to]);
+
   const filtered = useMemo(() => {
     return mockFlights.filter((f) => {
       if (f.fromCode !== from) return false;
